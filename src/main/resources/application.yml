@@ -1,0 +1,35 @@
+server:
+  port: ${PORT:8087}
+
+spring:
+  application:
+    name: artagram-ai-worker
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://artagram_app:artagram_secret@localhost:27017/db_ia?authSource=admin}
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:artagram}
+    password: ${RABBITMQ_PASSWORD:artagram_secret}
+
+artagram:
+  storage:
+    endpoint: ${S3_ENDPOINT:http://localhost:9000}
+    region: ${S3_REGION:us-east-1}
+    bucket: ${S3_BUCKET:artagram-uploads}
+    access-key: ${S3_ACCESS_KEY:minioadmin}
+    secret-key: ${S3_SECRET_KEY:minioadmin}
+    path-style-access: true
+    local-dir: ${STORAGE_LOCAL_DIR:uploads}
+  ia:
+    groq-api-key: ${GROQ_API_KEY:}
+    groq-model: ${GROQ_MODEL:qwen/qwen3.8-27b}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
