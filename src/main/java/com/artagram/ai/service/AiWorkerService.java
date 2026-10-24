@@ -59,18 +59,18 @@ public class AiWorkerService {
         );
         mongoRepo.save(doc);
 
-        Map<String, Object> eventoCompletado = Map.of(
-                "tipo", "AI_ANALISIS_COMPLETADO",
-                "publicacionId", publicacionId.toString(),
-                "autorId", autorId.toString(),
-                "estado", "COMPLETADO",
-                "diagnosticoGeneral", diagnostico,
-                "paletaDetectada", resultado.paletaDetectada() != null ? resultado.paletaDetectada() : "",
-                "composicion", composicion,
-                "puntosMejora", puntosMejora,
-                "sugerencias", sugerencias,
-                "puntuacionArmonia", resultado.scoreEstimado(),
-                "timestamp", Instant.now().toString()
+        Map<String, Object> eventoCompletado = Map.ofEntries(
+                Map.entry("tipo", "AI_ANALISIS_COMPLETADO"),
+                Map.entry("publicacionId", publicacionId.toString()),
+                Map.entry("autorId", autorId.toString()),
+                Map.entry("estado", "COMPLETADO"),
+                Map.entry("diagnosticoGeneral", diagnostico),
+                Map.entry("paletaDetectada", resultado.paletaDetectada() != null ? resultado.paletaDetectada() : ""),
+                Map.entry("composicion", composicion),
+                Map.entry("puntosMejora", puntosMejora),
+                Map.entry("sugerencias", sugerencias),
+                Map.entry("puntuacionArmonia", resultado.scoreEstimado()),
+                Map.entry("timestamp", Instant.now().toString())
         );
 
         log.info("Publicando ai.completed para publicacionId={}", publicacionId);
