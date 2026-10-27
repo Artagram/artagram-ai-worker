@@ -31,6 +31,7 @@ public class AiEventListener {
             aiWorkerService.procesarAnalisis(publicacionId, autorId, imagenUrl, titulo, descripcion);
         } catch (Exception ex) {
             log.error("Error al procesar solicitud ai.analyze: {}", ex.getMessage(), ex);
+            throw new IllegalStateException("Fallo al procesar ai.analyze", ex);
         }
     }
 }
