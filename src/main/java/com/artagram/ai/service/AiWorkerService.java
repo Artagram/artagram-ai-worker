@@ -57,7 +57,13 @@ public class AiWorkerService {
                 proveedorIa.getNombreModelo(),
                 resultado.toString()
         );
-        mongoRepo.save(doc);
+        // La copia en Mongo es solo historial: feed guarda el resultado al recibir
+        // ai.completed, asi que un fallo aqui no debe dejar la obra sin analisis.
+        try {
+            mongoRepo.save(doc);
+        } catch (RuntimeException ex) {
+            log.warn("No se pudo guardar el analisis en Mongo para publicacionId={}: {}", publicacionId, ex.getMessage());
+        }
 
         Map<String, Object> eventoCompletado = Map.ofEntries(
                 Map.entry("tipo", "AI_ANALISIS_COMPLETADO"),

@@ -2,6 +2,7 @@ package com.artagram.ai.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,6 +53,19 @@ class AiWorkerServiceTest {
         service.procesarAnalisis(pubId, autorId, "http://img/test.jpg", "Mi Obra", "Descripción");
 
         verify(mongoRepo).save(any(AnalisisIaDocument.class));
+        verify(rabbitTemplate).convertAndSend(eq("artagram.events"), eq("ai.completed"), any(Object.class));
+    }
+
+    @Test
+    void siMongoFallaIgualSePublicaElResultado() {
+        when(estrategia.analizar(any(), eq(proveedorIa))).thenReturn(new AnalisisTecnicoResultado(
+                List.of("Fuerte trazo"), List.of("Más contraste"), List.of("Aplicar veladuras"),
+                90, "#fff, #000", "Regla de tercios", "Excelente pieza"
+        ));
+        doThrow(new IllegalStateException("bad auth")).when(mongoRepo).save(any(AnalisisIaDocument.class));
+
+        service.procesarAnalisis(UUID.randomUUID(), UUID.randomUUID(), "https://img/test.jpg", "Mi Obra", "");
+
         verify(rabbitTemplate).convertAndSend(eq("artagram.events"), eq("ai.completed"), any(Object.class));
     }
 }
