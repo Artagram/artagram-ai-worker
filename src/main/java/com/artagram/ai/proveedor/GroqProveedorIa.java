@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class GroqProveedorIa implements ProveedorIa {
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
 
+    @Autowired
     public GroqProveedorIa(@Value("${artagram.ia.groq-api-key:}") String apiKey,
                            @Value("${artagram.ia.groq-model:qwen/qwen3.8-27b}") String model,
                            FakeProveedorIa fallback,
