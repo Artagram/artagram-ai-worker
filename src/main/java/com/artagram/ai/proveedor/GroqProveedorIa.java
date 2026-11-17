@@ -34,13 +34,19 @@ public class GroqProveedorIa implements ProveedorIa {
                            @Value("${artagram.ia.groq-model:qwen/qwen3.8-27b}") String model,
                            FakeProveedorIa fallback,
                            ObjectMapper objectMapper) {
+        this(apiKey, model, fallback, objectMapper, HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(10))
+                .build());
+    }
+
+    /** Permite inyectar el cliente HTTP en las pruebas. */
+    GroqProveedorIa(String apiKey, String model, FakeProveedorIa fallback,
+                    ObjectMapper objectMapper, HttpClient httpClient) {
         this.apiKey = apiKey;
         this.model = model;
         this.fallback = fallback;
         this.objectMapper = objectMapper;
-        this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(10))
-                .build();
+        this.httpClient = httpClient;
     }
 
     @Override
