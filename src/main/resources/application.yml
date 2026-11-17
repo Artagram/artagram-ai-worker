@@ -7,7 +7,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb://artagram_app:artagram_secret@localhost:27017/db_ia?authSource=admin}
+      uri: ${MONGODB_URI:mongodb://${MONGO_USER:artagram}:${MONGO_PASSWORD:artagram}@localhost:27017/db_ia?authSource=admin}
 
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}

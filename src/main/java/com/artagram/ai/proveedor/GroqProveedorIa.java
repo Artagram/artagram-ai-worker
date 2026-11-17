@@ -100,6 +100,10 @@ public class GroqProveedorIa implements ProveedorIa {
 
             JsonNode root = objectMapper.readTree(response.body());
             return root.path("choices").get(0).path("message").path("content").asText();
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            log.error("Consulta a la API de Groq interrumpida, usando fallback");
+            return fallback.completar(prompt);
         } catch (Exception ex) {
             log.error("Excepción al consultar API de Groq: {}, usando fallback", ex.getMessage());
             return fallback.completar(prompt);
