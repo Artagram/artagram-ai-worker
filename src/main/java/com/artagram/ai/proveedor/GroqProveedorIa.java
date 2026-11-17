@@ -16,11 +16,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+/**
+ * Adaptador de Groq. Se activa con {@code IA_PROVEEDOR=groq} (valor por
+ * defecto). Para cambiar de proveedor (escenario 9) basta otro adaptador de
+ * {@link ProveedorIa} con su propio {@code havingValue} y cambiar la variable:
+ * ni el contrato de mensajes ni los demas servicios se enteran.
+ */
 @Component
 @Primary
+@ConditionalOnProperty(prefix = "artagram.ia", name = "proveedor", havingValue = "groq", matchIfMissing = true)
 public class GroqProveedorIa implements ProveedorIa {
 
     private static final Logger log = LoggerFactory.getLogger(GroqProveedorIa.class);
