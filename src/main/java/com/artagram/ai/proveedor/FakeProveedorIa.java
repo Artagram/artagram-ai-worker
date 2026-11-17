@@ -3,6 +3,10 @@ package com.artagram.ai.proveedor;
 import com.artagram.ai.prompt.PromptIa;
 import org.springframework.stereotype.Component;
 
+/**
+ * Respuesta fija, sin red. Siempre existe: es el respaldo de los adaptadores
+ * reales y el proveedor activo con {@code IA_PROVEEDOR=fake}.
+ */
 @Component
 public class FakeProveedorIa implements ProveedorIa {
 
